@@ -49,6 +49,15 @@ public class ControladorPerfil {
         System.out.println("Perfil leido " + perfil);
         //este objeto perfil despues se guarda con una sola linea en mongodb
         //Aqu[i va ir la linea para guardar
+        
+        //ANTES DE GUARDAR TENGO QUE BUSCAR POR ID, para recobrar las localiza
+        //guardadas
+        Perfil perfilGuardado = repoPerfil.findById(perfil.getId()).get();
+        List<Localizacion> locas=perfilGuardado.getLocalizaciones();
+        locas.add(perfil.getLocalizaciones().get(0));
+        //Las vuelvo a reasignar antes de guardar
+        perfil.setLocalizaciones(locas);
+        //ya lo guardo
         repoPerfil.save(perfil);
 
         //Despues enviamos un mensaje de status al cliente para que se informe
